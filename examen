@@ -1,0 +1,163 @@
+# задача 1 вычисление длины окружности и площади круга
+def circle_stats(radius):
+    if not isinstance(radius, (int, float)) or radius < 0: # проверка является ли радиус числом и неотрицательным
+        return (0, 0)
+    pi = 3.14159
+    return (2 * pi * radius, pi * radius * radius) # возвращаем длину окружности и площадь
+
+# задача 2 подсчёт гласных
+def count_vowels(text):
+    # проверяем, является ли вход строкой
+    if not isinstance(text, str):
+        return {}
+    vowels = 'аеиоуыэюя'
+    text = text.lower()  # приводим текст к нижнему регистру
+    # инициализируем словарь для подсчёта
+    result = {v: 0 for v in vowels}
+    # проходим по каждому символу и увеличиваем счётчик, если это гласная
+    for char in text:
+        if char in vowels:
+            result[char] += 1
+    return result
+
+# задача 3 Сумма чисел физзбазз
+def fizzbuzz_sum(n):
+    # проверка является ли n целым числом >= 1
+    if not isinstance(n, int) or n < 1:
+        return 0
+    total = 0  # инициализируем сумму
+    for i in range(1, n + 1):
+        # добавляем i, если оно не кратно 3 или 5
+        if i % 3 != 0 and i % 5 != 0:
+            total += i
+    return total
+
+# задача 4 удаление дубликатов и сортировка списка
+def remove_duplicates_sorted(lst):
+    # проверка является ли вход списком
+    if not isinstance(lst, list):
+        return []
+    unique = []  # список для уникальных элементов
+    # добавляем элементы, если их нет
+    for item in lst:
+        if item not in unique:
+            unique.append(item)
+    n = len(unique)
+    # пузырьковая сортировка по возрастанию
+    for i in range(n):
+        for j in range(i + 1, n):
+            if unique[i] > unique[j]:
+                unique[i], unique[j] = unique[j], unique[i]
+    return unique
+
+# задача 5: слияние двух словарей с суммированием значений
+def merge_dicts(dict1, dict2):
+    # проверяем, являются ли оба входа словарями
+    if not isinstance(dict1, dict) or not isinstance(dict2, dict):
+        return {}
+    result = {}  # словарь считающий результат
+    keys = set(dict1) | set(dict2)
+    for key in keys:
+        # получаем значения или 0, если ключа нет
+        val1 = dict1.get(key, 0)
+        val2 = dict2.get(key, 0)
+        # если оба значения числа, суммируем, а иначе 0
+        if isinstance(val1, (int, float)) and isinstance(val2, (int, float)):
+            result[key] = val1 + val2
+        else:
+            result[key] = 0
+    return result
+
+# Задача 6 обработка файла с числами
+def process_numbers_file():
+    try:
+        with open('numbers.txt', 'r') as f:
+            lines = f.readlines()
+        filtered = []  # список для отфильтрованных чисел
+        for line in lines:
+            line = line.strip()  # убираем пробелы
+            # проверяем, является ли строка целым числом
+            if line.isdigit() or (line.startswith('-') and line[1:].isdigit()):
+                num = int(line)
+                # добавляем, если положительное и чётное
+                if num > 0 and num % 2 == 0:
+                    filtered.append(str(num))
+        # записываем отфильтрованные числа в новый файл
+        with open('filtered.txt', 'w') as f:
+            f.write('\n'.join(filtered))
+    except:
+        pass
+
+# Задача 7 применение функции к элементам списка
+def apply_to_list(func, lst):
+    # проверяем, является ли lst списком а func функцией
+    if not isinstance(lst, list) or not callable(func):
+        return []
+    result = []  # список результатов
+    for item in lst:
+        try:
+            # применение
+            result.append(func(item))
+        except:
+            # если ошибка, то None
+            result.append(None)
+    return result
+
+
+# Задача 8 безопасное деление
+def safe_divide(a, b):
+    # проверка типов и нуля
+    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)) or b == 0:
+        return "Ошибка"
+    # деление
+    return a / b
+
+
+# задача 10
+def text_analyzer(text):
+    # проверка: text должен быть строкой
+    if not isinstance(text, str):
+        return {
+            'char_count': 0,
+            'word_count': 0,
+            'sentence_count': 0,
+            'most_common_word': ''
+        }
+
+    char_count = len(text)
+
+    # удаляем знаки препинания для подсчёта слов
+    clean_text = ''
+    for ch in text:
+        if ch.isalpha() or ch == ' ':
+            clean_text += ch.lower()
+        else:
+            clean_text += ' '
+
+    words = clean_text.split()
+    word_count = len(words)
+
+    # подсчёт предложений
+    sentence_count = 0
+    for ch in text:
+        if ch in '.!?':
+            sentence_count += 1
+
+    # самое частое слово
+    most_common_word = ''
+    if words:
+        freq = {}
+        for word in words:
+            freq[word] = freq.get(word, 0) + 1
+        max_count = 0
+        for word, count in freq.items():
+            if count > max_count:
+                max_count = count
+                most_common_word = word
+
+    return {
+        'char_count': char_count,
+        'word_count': word_count,
+        'sentence_count': sentence_count,
+        'most_common_word': most_common_word
+    }
